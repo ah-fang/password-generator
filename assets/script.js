@@ -1,45 +1,33 @@
-// Assignment code here
-
-
 // Get references to the #generate element
 var generateBtn = document.querySelector("#generate");
 
+//the empty string that other character sets will be added to
+var stringSet = "";
+
+//charset for uppercase letters
+const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+//charset for uppercase letters
+const lower = "abcdefghijklmnopqrstuvwxyz";
+//charset for numbers
+const numbers = "0123456789";
+//charset for special characters
+const specials = '~!@#$%^&*()_+{}":?><;.,';
+// return specials[Math.floor(Math.random() * specials.length)];
+
 function generatePassword() {
-  //do stuff
-  function numberCheck() {
-    var length = window.prompt("Please enter the desired character length of your password as a number. (Note: password must be between 8 and 129 characters in length.");
-    if (length < 8 || length > 129) {
+  var passLength = window.prompt("Please enter the desired character length of your password as a number. (Note: password must be between 8 and 129 characters in length.)");
+    if (passLength < 8 || passLength > 129) {
       window.alert("Please choose a number between 8 and 129.");
-      numberCheck();
-      //prompt length again. Do not move on to other prompts! 
+      generatePassword();
     }
-  } 
-   if (length >= 8 && length <= 129) {
-    console.log("The password will be " + length + " characters long.")  
+   else {
+    window.alert("The password will be " + passLength + " characters long.")  
     console.log("This number is acceptable.")
     }
-//   if(window.confirm("Would you like your password to have lowercase characters? If so, click OK. If not, click cancel.")) {
-//     console.log("We've added the lowercase characters, captain.")
-//     //then add charset 
-//   }
-//  else {
-//     console.log("It's been an honor.");
-//   }
-//   window.prompt("Would you like your password to have uppercase characters? If so, click OK. If not, click cancel.");
-//   window.prompt("Would you like your password to have numeric characters? If so, click OK. If not, click cancel.");
-//   window.prompt("Would you like your password to have special characters? If so, click OK. If not, click cancel.");
-}
+    charSet();
+    return stringSet[Math.floor(Math.random() * stringSet.length)];
+  }
 
-function upperCase(){
-  //charset for uppercase letters
-  const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  return upper[Math.floor(Math.random() * upper.length)]; 
-}
-function lowerCase(){
-  //charset for uppercase letters
-  const lower = "abcdefghijklmnopqrstuvwxyz";
-  return lower[Math.floor(Math.random() * lower.length)]; 
-}
 // Write password to the #password input
 function writePassword() {
   var password = generatePassword();
@@ -48,24 +36,34 @@ function writePassword() {
   passwordText.value = password;
 }
 
-/*
-  if (yes to lowercase) {
-    add lowercase text set to consideration (concatenate strings?)
+function charSet() {
+  var upperConfirm = window.confirm("Would you like your password to have uppercase characters? If so, click OK. If not, click cancel.");
+  var lowerConfirm = window.confirm("Would you like your password to have lowercase characters? If so, click OK. If not, click cancel.");
+  var numberConfirm = window.confirm("Would you like your password to have numeric characters? If so, click OK. If not, click cancel.");
+  var specialConfirm = window.confirm("Would you like your password to have special characters? If so, click OK. If not, click cancel.");
+  
+  if (upperConfirm) {
+    // add lowercase text set to consideration
+    stringSet = stringSet + lower;
   }
-  if (yes to uppercase) {
-    add lowercase text set to consideration
+  if (lowerConfirm) {
+    // add lowercase text set to consideration
+    stringSet = stringSet + upper;
   }
-  if (yes to numeric) {
-    add numerics set to consideration
+  if (numberConfirm) {
+    // add numerics set to consideration
+    stringSet = stringSet + numbers;
   }
-  if (yes to special) {
-    add special characters set to consideration
+  if (specialConfirm) {
+    // add special characters set to consideration
+    stringSet = stringSet + specials;
   }
   else {
     window.alert("You must select at least one character set.");
-    reset options and ask again.
   }  
-*/
+  console.log(stringSet);
+  return stringSet;
+}
 
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
