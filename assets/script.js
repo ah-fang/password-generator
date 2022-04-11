@@ -1,69 +1,70 @@
-// Get references to the #generate element
-var generateBtn = document.querySelector("#generate");
+/*LOGICAL SEQUENCE
+Initialize empty string for customizable character set (stringSet)
+Initialize empty string for final password (passText)
+Create separate character sets available for concatenation, tied to prompts
+Prompts: 
+- Password length (set to var passLength and use value)
+- Character sets (if true, concatenate to strings)
 
-//the empty string that other character sets will be added to
+Generate random characters based on customized string set and to the number of characters specified in passLength
+Feed random characters to passText (saved during loop)
+*/
+var generateBtn = document.querySelector("#generate");
 var stringSet = "";
+var passText = "";
 
 //charset for uppercase letters
 const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-//charset for uppercase letters
+//charset for uppercase lettersgenerate
 const lower = "abcdefghijklmnopqrstuvwxyz";
 //charset for numbers
 const numbers = "0123456789";
 //charset for special characters
 const specials = '~!@#$%^&*()_+{}":?><;.,';
-// return specials[Math.floor(Math.random() * specials.length)];
 
-function generatePassword() {
-  var passLength = window.prompt("Please enter the desired character length of your password as a number. (Note: password must be between 8 and 129 characters in length.)");
-    if (passLength < 8 || passLength > 129) {
-      window.alert("Please choose a number between 8 and 129.");
-      generatePassword();
-    }
-   else {
-    window.alert("The password will be " + passLength + " characters long.")  
-    console.log("This number is acceptable.")
-    }
-    charSet();
-    return stringSet[Math.floor(Math.random() * stringSet.length)];
-  }
-
-// Write password to the #password input
-function writePassword() {
-  var password = generatePassword();
-  var passwordText = document.querySelector("#password");
-  console.log("The function writePassword ran.")
-  passwordText.value = password;
-}
-
+var passLength;
 function charSet() {
   var upperConfirm = window.confirm("Would you like your password to have uppercase characters? If so, click OK. If not, click cancel.");
   var lowerConfirm = window.confirm("Would you like your password to have lowercase characters? If so, click OK. If not, click cancel.");
   var numberConfirm = window.confirm("Would you like your password to have numeric characters? If so, click OK. If not, click cancel.");
   var specialConfirm = window.confirm("Would you like your password to have special characters? If so, click OK. If not, click cancel.");
-  
-  if (upperConfirm) {
-    // add lowercase text set to consideration
-    stringSet = stringSet + lower;
+  switch(upperConfirm, lowerConfirm, numberConfirm, specialConfirm) {
+    case upperConfirm:
+      stringSet += upper;
+    case lowerConfirm:
+      stringSet += lower;
+    case numberConfirm:
+      stringSet += numbers;
+    case specialConfirm:
+      stringSet += specials;
+      break;  
   }
-  if (lowerConfirm) {
-    // add lowercase text set to consideration
-    stringSet = stringSet + upper;
-  }
-  if (numberConfirm) {
-    // add numerics set to consideration
-    stringSet = stringSet + numbers;
-  }
-  if (specialConfirm) {
-    // add special characters set to consideration
-    stringSet = stringSet + specials;
-  }
-  else {
+  if (!upperConfirm && !lowerConfirm && !numberConfirm && !specialConfirm) {
     window.alert("You must select at least one character set.");
-  }  
-  console.log(stringSet);
+    charSet();
+  }
   return stringSet;
 }
 
-// Add event listener to generate button
-generateBtn.addEventListener("click", writePassword);
+function generatePassword() {
+  passLength = window.prompt("Please enter the desired character length of your password as a number.\n(Note: password must be between 8 and 128 characters in length.)");
+    if (passLength < 8 || passLength > 128) {
+      window.alert("Please choose a number between 8 and 128.");
+      generatePassword();
+    }
+    else {
+    window.alert("The password will be " + passLength + " characters long.")  
+    }
+    charSet();
+    writePassword();
+    function writePassword() {
+      var passwordText = document.querySelector("#password");
+      for (let i = 0; i < passLength; i++) {
+        passText += stringSet.charAt(Math.floor(Math.random() * stringSet.length));
+      }
+      passwordText.textContent = passText;
+    }
+}
+
+//Event listener to generate button
+generateBtn.addEventListener("click", generatePassword);

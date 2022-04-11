@@ -2,4 +2,4 @@
 
 ## Password Generator 
 
-Link: _Insert link_
+Link: https://ah-fang.github.io/ucb-challenge3/
